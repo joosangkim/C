@@ -21,18 +21,15 @@ int main(void){
   }
   
   printf("입력된 문자의 수: %d\n", cnt);
-  a = fflush(stdin);
 
   /* 4-2 Sum of entered integer until EOF */
   while(1){
     fputs("Data input(Ctrl+D to exit): ", stdout);
     if (scanf("%d", &a) == EOF){
-      printf("%d", scanf("%d", &a));
       break;
     }
-    printf("%d", a);
-
+    sum += a;
   }
-
+  printf("Sum is: %d\n", sum);
   return 0;
 }
