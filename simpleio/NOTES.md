@@ -46,7 +46,6 @@ scanf("%[^\n]", str);
 gets(getsStr);
 ``` 
 
-
 ### getchar 
 `int getchar(void)`
 * 표준 입력 장치를 통해 문자만 입력받는다. 
