@@ -4,11 +4,12 @@
 #include "common.h"
 #include "phoneData.h"
 #include "screenOut.h"
+#include "phoneFunc.h"
 
 #define LIST_NUM 100
 
 int numOfData = 0;
-phoneData *phoneList[LIST_NUM];
+phoneData* phoneList[LIST_NUM];
 
 /* Func:   void InputPhoneData(void)
  * Return: void
@@ -23,13 +24,15 @@ void InputPhoneData(void){
   gets(pd->name);
   fputs("Enter phone: ", stdout);
   gets(pd->phoneNum);
-  if(isDup(pd)){
+
+  if(CheckDupInfo(pd)){
     puts("Already exists");
   }else {
     phoneList[numOfData] = pd;
     numOfData++;
     puts("Input complete");
   } 
+  fflush(stdin);
 }
 
 /* Func:   void SearchPhoneData(void)
@@ -37,31 +40,27 @@ void InputPhoneData(void){
  */
 void SearchPhoneData(void){
   char name[NAME_LEN];
+  int* searchList;
   int i ;
+  int cnt = 0;
   fputs("Enter name: ", stdout);
   gets(name);
   for ( i = 0; i < numOfData; i++){
     if (!strcmp(phoneList[i]->name, name) ){
-      ShowPhoneInfoByPtr(phoneList[i]);
-      return;
+      cnt+=1;
+      searchList = GetIdxListByName(name, cnt, i);
     }
   }
-  puts("No data found");
-}
-
-/* Func:   void SearchPhoneData(void)
- * Return: void
- */
-int isDup(phoneData *pd){
-  int i ;
-  for ( i = 0; i < numOfData; i++){
-    if (!strcmp(phoneList[i]->name, pd->name) ){
-      if (!strcmp(phoneList[i]->phoneNum, pd->phoneNum)){
-        return 1;
-      }
+  if( !cnt) {
+    puts("No data found");
+  }else {
+    for( i =0; i< cnt; i++){
+      ShowPhoneInfoByPtr(phoneList[searchList[i]]);
+      puts("");
     }
+    fflush(stdin);
+    free(searchList);
   }
-  return 0;
 }
 
 /* Func:   void DeletePhoneData(void)
@@ -69,21 +68,40 @@ int isDup(phoneData *pd){
  */
 void DeletePhoneData(void){
   char name[NAME_LEN];
-  int i,j  ;
+  int* detList;
+  int delCnt = 0;
+  int del;
+  int i,j,del_i  ;
 
   fputs("Enter name: ", stdout);
   gets(name);
   for ( i = 0; i < numOfData; i++){
     if (!strcmp(phoneList[i]->name, name) ){
-      for(j = i+1; j < numOfData; j++){
-        phoneList[j-1] = phoneList[j] ;
-      }
-      numOfData--;
-      puts("Delete complete");
-      return;
+      delCnt+=1;
+      detList = GetIdxListByName(name, delCnt, i);
     }
   }
-  puts("No data found");
+
+  if (!delCnt){
+    puts("No data found");
+    return;
+  }else{
+    for(del_i = 0; del_i<delCnt; del_i++){
+        printf("NUM. %d\n", (del_i+1));
+        ShowPhoneInfoByPtr(phoneList[detList[del_i]]);
+      }
+      fputs("Choose delete number: ", stdout);
+      scanf("%d", &del);
+      fflush(stdin);
+    }
+
+    for(j = detList[del-1]+1; j < numOfData; j++){
+      phoneList[j-1] = phoneList[j];
+    }
+    numOfData--;
+    free(detList);
+    puts("Delete complete");
+    return;
 }
 
 /* Func:   void ShowAllData(void)
@@ -94,5 +112,31 @@ void ShowAllData(void){
   for(i = 0; i < numOfData; i++){
     ShowPhoneInfoByPtr(phoneList[i]);
   }
+}
+
+/* Func:   int CheckDupInfo(phoneData*)
+ * Return: int
+ */
+int CheckDupInfo(phoneData* pd){
+  int i ;
+  for ( i = 0; i < numOfData; i++){
+    if (!strcmp(phoneList[i]->name, pd->name) && !strcmp(phoneList[i]->phoneNum, pd->phoneNum) ){
+        return 1;
+    }
+  }
+  return 0;
+}
+
+
+/* Func:   int* GetIdxListByName(char* name, int cnt, int idx)
+ * Return: int*
+ */
+int* GetIdxListByName(char* name, int cnt, int idx){
+  int* idxList = NULL;
+  if ( cnt > 1 )  idxList = (int*)realloc(idxList, cnt*sizeof(int));
+  else            idxList = (int*)malloc(cnt*sizeof(int));
+  
+  *(idxList+(cnt-1)) = idx;
+  return idxList;
 }
 /* EOF */

@@ -9,4 +9,7 @@ void InputPhoneData(void);
 void SearchPhoneData(void);
 void DeletePhoneData(void);
 void ShowAllData(void);
+int  CheckDupInfo(phoneData*);
+int* GetIdxListByName(char* name, int cnt, int idx);
+
 #endif
