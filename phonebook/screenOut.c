@@ -13,7 +13,8 @@ void ShowMenu(void){
   puts("  2. Show All Information ");
   puts("  3. Search an Information ");
   puts("  4. Delete an Information ");
-  puts("  5. Quit ");
+  puts("  5. Change an Information ");
+  puts("  6. Quit ");
 }
 
 /* Func:   void ShowPhoneInfo(phoneData phone)

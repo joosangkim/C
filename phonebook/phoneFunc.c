@@ -132,7 +132,7 @@ void StoreDataToFile(void){
   int i; 
   fp = fopen("phone.csv", "w+");
   for(i = 0; i< numOfData; i++){
-    fprintf(fp, "%s,%s",phoneList[i]->name,phoneList[i]->phoneNum);
+    fprintf(fp, "%s,%s\n",phoneList[i]->name,phoneList[i]->phoneNum);
   }
   fclose(fp);
   return;
@@ -153,16 +153,56 @@ void LoadDataFromFile(void){
   while(NULL != fgets(csv, CSV_LEN, fp)){
     name = strtok(csv, ",");
     phone = strtok(NULL, ",");
-    puts(name);
-    puts(phone);
+    phone = strtok(phone, "\n");
     if(_InsertPhoneData(name, phone)){
       puts("Failed to load file");
     };
   }
+  
   free(csv);
   fclose(fp);
 }
 
+void ChangePhoneData(void){
+  char name[NAME_LEN];
+  int* chgList;
+  int chgCnt = 0;
+  int chg;
+  int i,chg_i;
+  char* phone = (char*)malloc(sizeof(char)*PHONE_LEN);
+
+  fputs("Enter name: ", stdout);
+  gets(name);
+  for ( i = 0; i < numOfData; i++){
+    if (!strcmp(phoneList[i]->name, name) ){
+      chgCnt+=1;
+      chgList = GetIdxListByName(chgCnt, i);
+    }
+  }
+
+  if (!chgCnt){
+    puts("No data found");
+    return;
+  }else{
+    for(chg_i = 0; chg_i<chgCnt; chg_i++){
+        printf("NUM. %d\n", (chg_i+1));
+        ShowPhoneInfoByPtr(phoneList[chgList[chg_i]]);
+    }
+    fputs("Choose change number: ", stdout);
+    scanf("%d%*c", &chg);
+    fflush(stdin);
+    }
+
+    fputs("To be phone number: ", stdout );
+    gets(phone);
+    strcpy(phoneList[chgList[chg-1]]->phoneNum, phone);
+
+    free(chgList);
+    free(phone);
+    puts("Change complete");
+    fflush(stdin);
+    return;
+}
 
 /* Func:   int CheckDupInfo(phoneData*)
  * Return: int

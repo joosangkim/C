@@ -13,5 +13,6 @@ int  CheckDupInfo(phoneData*);
 int* GetIdxListByName(int cnt, int idx);
 void StoreDataToFile(void);
 void LoadDataFromFile(void);
+void ChangePhoneData(void);
 #endif
 

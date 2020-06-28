@@ -11,6 +11,7 @@ enum{
   SHOWALL, 
   SEARCH,
   DELETE,
+  CHANGE,
   QUIT
 };
 
@@ -36,6 +37,9 @@ int main(void){
         break;
       case SEARCH:
         SearchPhoneData();
+        break;
+      case CHANGE:
+        ChangePhoneData();
         break;
       case DELETE:
         DeletePhoneData();
