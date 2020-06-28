@@ -30,8 +30,9 @@ void InputPhoneData(void){
     puts("Already exists");
     return;
   }
-  puts("Input complete"); 
   fflush(stdin);
+  StoreDataToFileInStruct();
+  puts("Input complete"); 
 }
 
 int _InsertPhoneData(char* name, char* phoneNum){
@@ -110,6 +111,7 @@ void DeletePhoneData(void){
     }
     numOfData--;
     free(detList);
+    StoreDataToFileInStruct();
     puts("Delete complete");
     return;
 }
@@ -128,11 +130,13 @@ void ShowAllData(void){
  * Return: void
  */
 void StoreDataToFile(void){
-  FILE* fp;
+  FILE* fp = fopen("phone.csv", "w");
   int i; 
-  fp = fopen("phone.csv", "w+");
+
+  fwrite(&numOfData, sizeof(int), 1, fp);
   for(i = 0; i< numOfData; i++){
     fprintf(fp, "%s,%s\n",phoneList[i]->name,phoneList[i]->phoneNum);
+    free(phoneList[i]);
   }
   fclose(fp);
   return;
@@ -161,6 +165,43 @@ void LoadDataFromFile(void){
   
   free(csv);
   fclose(fp);
+}
+
+/* Func:   void StoreDataToFileInStruct(void)
+ * Return: void
+ */
+void StoreDataToFileInStruct(void){
+  FILE* fp = fopen("phone_bin", "wb");
+
+  fwrite(phoneList, sizeof(phoneData), sizeof(phoneList), fp);
+  fclose(fp);
+  return;
+}
+
+/* Func:   void LoadDataFromFileInStruct(void)
+ * Return: void
+ */
+void LoadDataFromFileInStruct(void){
+  FILE* fp = fopen("phone_bin", "rb");
+  int i;
+
+  // fread(&numOfData)
+  // char* csv = NULL;
+  // char* name;
+  // char* phone;
+
+  // csv = (char*)malloc(CSV_LEN * sizeof(char));
+  // while(NULL != fgets(csv, CSV_LEN, fp)){
+  //   name = strtok(csv, ",");
+  //   phone = strtok(NULL, ",");
+  //   phone = strtok(phone, "\n");
+  //   if(_InsertPhoneData(name, phone)){
+  //     puts("Failed to load file");
+  //   };
+  // }
+  
+  // free(csv);
+  // fclose(fp);
 }
 
 void ChangePhoneData(void){
@@ -201,6 +242,7 @@ void ChangePhoneData(void){
     free(phone);
     puts("Change complete");
     fflush(stdin);
+    StoreDataToFileInStruct();
     return;
 }
 

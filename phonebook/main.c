@@ -21,7 +21,8 @@ enum{
 int main(void){
   int inputMenu = 0;
   puts("Loading files...");
-  LoadDataFromFile();
+  /* LoadDataFromFile(); */
+  LoadDataFromFileInStruct();
   while(1){  
     ShowMenu();
     fputs("Choose : ", stdout);

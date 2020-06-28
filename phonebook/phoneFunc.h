@@ -14,5 +14,8 @@ int* GetIdxListByName(int cnt, int idx);
 void StoreDataToFile(void);
 void LoadDataFromFile(void);
 void ChangePhoneData(void);
+
+void StoreDataToFileInStruct(void);
+void LoadDataFromFileInStruct(void);
 #endif
 
