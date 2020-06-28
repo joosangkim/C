@@ -19,9 +19,9 @@ enum{
  */
 int main(void){
   int inputMenu = 0;
-  while(1){
-    puts("Loading files...");
-    LoadDataFromFile();
+  puts("Loading files...");
+  LoadDataFromFile();
+  while(1){  
     ShowMenu();
     fputs("Choose : ", stdout);
     scanf("%d%*c", &inputMenu);

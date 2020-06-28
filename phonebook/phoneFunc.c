@@ -15,24 +15,34 @@ phoneData* phoneList[LIST_NUM];
  * Return: void
  */
 void InputPhoneData(void){
+  char name[NAME_LEN];
+  char phone[PHONE_LEN];
   if(numOfData >= LIST_NUM){
     puts("Not enouhg memory");
     return;
   }
-  phoneData *pd = (phoneData*)malloc(sizeof(phoneData));
   fputs("Enter name: ", stdout);
-  gets(pd->name);
+  gets(name);
   fputs("Enter phone: ", stdout);
-  gets(pd->phoneNum);
+  gets(phone);
 
-  if(CheckDupInfo(pd)){
+  if(_InsertPhoneData(name, phone)){
     puts("Already exists");
-  }else {
-    phoneList[numOfData] = pd;
-    numOfData++;
-    puts("Input complete");
-  } 
+    return;
+  }
+  puts("Input complete"); 
   fflush(stdin);
+}
+
+int _InsertPhoneData(char* name, char* phoneNum){
+  phoneData* pd = (phoneData*)malloc(sizeof(phoneData));
+  strcpy(pd->name, name);
+  strcpy(pd->phoneNum, phoneNum);
+  if(CheckDupInfo(pd)){
+    return 1;
+  }
+  phoneList[numOfData++] = pd;
+  return 0; 
 }
 
 /* Func:   void SearchPhoneData(void)
@@ -122,7 +132,7 @@ void StoreDataToFile(void){
   int i; 
   fp = fopen("phone.csv", "w+");
   for(i = 0; i< numOfData; i++){
-    fprintf(fp, "%s,%s\n",phoneList[i]->name,phoneList[i]->phoneNum);
+    fprintf(fp, "%s,%s",phoneList[i]->name,phoneList[i]->phoneNum);
   }
   fclose(fp);
   return;
@@ -133,25 +143,23 @@ void StoreDataToFile(void){
  */
 void LoadDataFromFile(void){
   FILE* fp;
-  char* val = NULL;
+  char* csv = NULL;
   char* name;
   char* phone;
-  phoneData* pd = NULL;
-  fp = fopen("phone.csv", "r");
-  val = (char*)malloc(CSV_LEN * sizeof(char));
 
-  while(NULL != fgets(val, CSV_LEN, fp)){
-    pd = (phoneData*)malloc(sizeof(phoneData));
-    
-    name=strtok(val, ",");
-    strncpy(pd->name, name, NAME_LEN);
-    
-    phone = strtok(val, ",");
-    strncpy(pd->phoneNum, phone, PHONE_LEN);
-    phoneList[numOfData++] = pd;
-    free(pd);
+  fp = fopen("phone.csv", "r");
+
+  csv = (char*)malloc(CSV_LEN * sizeof(char));
+  while(NULL != fgets(csv, CSV_LEN, fp)){
+    name = strtok(csv, ",");
+    phone = strtok(NULL, ",");
+    puts(name);
+    puts(phone);
+    if(_InsertPhoneData(name, phone)){
+      puts("Failed to load file");
+    };
   }
-  free(val);
+  free(csv);
   fclose(fp);
 }
 

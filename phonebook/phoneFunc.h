@@ -5,6 +5,7 @@
 #define __PHONEFUNC_H__
 #include "phoneData.h"
 void InputPhoneData(void);
+int _InsertPhoneData(char* name, char* phoneNum);
 void SearchPhoneData(void);
 void DeletePhoneData(void);
 void ShowAllData(void);
