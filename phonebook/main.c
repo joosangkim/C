@@ -20,6 +20,8 @@ enum{
 int main(void){
   int inputMenu = 0;
   while(1){
+    puts("Loading files...");
+    LoadDataFromFile();
     ShowMenu();
     fputs("Choose : ", stdout);
     scanf("%d%*c", &inputMenu);
@@ -40,6 +42,7 @@ int main(void){
         break;
     }
     if(inputMenu == QUIT){
+      StoreDataToFile();
       puts("Thanks for using.");
       break;
     }

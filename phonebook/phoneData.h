@@ -6,6 +6,7 @@
 
 #define NAME_LEN 10 
 #define PHONE_LEN 30 
+#define CSV_LEN NAME_LEN+PHONE_LEN
 
 typedef struct __phoneData {
   char name[NAME_LEN];
@@ -13,3 +14,4 @@ typedef struct __phoneData {
 } phoneData;
 
 #endif
+

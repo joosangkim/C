@@ -48,7 +48,7 @@ void SearchPhoneData(void){
   for ( i = 0; i < numOfData; i++){
     if (!strcmp(phoneList[i]->name, name) ){
       cnt+=1;
-      searchList = GetIdxListByName(name, cnt, i);
+      searchList = GetIdxListByName(cnt, i);
     }
   }
   if( !cnt) {
@@ -78,7 +78,7 @@ void DeletePhoneData(void){
   for ( i = 0; i < numOfData; i++){
     if (!strcmp(phoneList[i]->name, name) ){
       delCnt+=1;
-      detList = GetIdxListByName(name, delCnt, i);
+      detList = GetIdxListByName(delCnt, i);
     }
   }
 
@@ -114,6 +114,48 @@ void ShowAllData(void){
   }
 }
 
+/* Func:   void StoreDataToFile(void)
+ * Return: void
+ */
+void StoreDataToFile(void){
+  FILE* fp;
+  int i; 
+  fp = fopen("phone.csv", "w+");
+  for(i = 0; i< numOfData; i++){
+    fprintf(fp, "%s,%s\n",phoneList[i]->name,phoneList[i]->phoneNum);
+  }
+  fclose(fp);
+  return;
+}
+
+/* Func:   void LoadDataFromFile(void)
+ * Return: void
+ */
+void LoadDataFromFile(void){
+  FILE* fp;
+  char* val = NULL;
+  char* name;
+  char* phone;
+  phoneData* pd = NULL;
+  fp = fopen("phone.csv", "r");
+  val = (char*)malloc(CSV_LEN * sizeof(char));
+
+  while(NULL != fgets(val, CSV_LEN, fp)){
+    pd = (phoneData*)malloc(sizeof(phoneData));
+    
+    name=strtok(val, ",");
+    strncpy(pd->name, name, NAME_LEN);
+    
+    phone = strtok(val, ",");
+    strncpy(pd->phoneNum, phone, PHONE_LEN);
+    phoneList[numOfData++] = pd;
+    free(pd);
+  }
+  free(val);
+  fclose(fp);
+}
+
+
 /* Func:   int CheckDupInfo(phoneData*)
  * Return: int
  */
@@ -128,10 +170,10 @@ int CheckDupInfo(phoneData* pd){
 }
 
 
-/* Func:   int* GetIdxListByName(char* name, int cnt, int idx)
+/* Func:   int* GetIdxListByName(int cnt, int idx)
  * Return: int*
  */
-int* GetIdxListByName(char* name, int cnt, int idx){
+int* GetIdxListByName(int cnt, int idx){
   int* idxList = NULL;
   if ( cnt > 1 )  idxList = (int*)realloc(idxList, cnt*sizeof(int));
   else            idxList = (int*)malloc(cnt*sizeof(int));
