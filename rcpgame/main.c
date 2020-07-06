@@ -21,12 +21,11 @@ int main(void){
 
   puts("####### RESULT #######");
   WhoIsWinner(com, you);
-
-  printf(">> Com's choice %d \n", com);
-
-  if(you == EVEN) puts(">> Your choice is even.");
-  else            puts(">> Your choice is odd.");
-
+  fputs(">> Com's choice is ",stdout);
+  showRSP(com);
+  puts("");
+  fputs(">> Your choice is ",stdout);
+  showRSP(you);
   puts("");
   return 0;
 }

@@ -5,9 +5,10 @@
 #define __GAME_H__
 
 enum {
-  ODD=1,
-  EVEN
-};
+  ROCK=1,
+  SCISSORS,
+  PAPER
+} RCP;
 
 int ChoiceOfCom(void);
 int ChoiceOfMe(void);

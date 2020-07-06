@@ -10,7 +10,8 @@
 #include<stdlib.h>
 #include<string.h>
 
-int genRand(void);
+int genRandForRCP(void);
+void showRSP(int val);
 
 #endif
 /* EOF */
