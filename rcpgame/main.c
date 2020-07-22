@@ -14,12 +14,29 @@ double winRate;
 int main(void){
   int com;
   int you;
+  int userMoney;
+  int deal;
   puts("Let's start the game");
+
+  fputs("Enter your game money: ",stdout);
+  scanf("%d", &userMoney);
+  setUserMoney(userMoney);
+  fflush(stdin);
+  printf("User Money: %d\n", getUserMoney());
+  printf("Com Money: %d\n", getComMoney());
+
 
   while(1){
     if (!checkGameMoney()) {
       puts("Not enough game money.");
       break;
+    }
+    fputs("Enter your deal: ",stdout);
+    scanf("%d", &deal);
+    fflush(stdin);
+    if (setDeal(deal)){
+      puts("Not proper deal");
+      continue;
     }
     puts("");
     puts("####### START #######");

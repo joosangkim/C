@@ -10,6 +10,8 @@ void discUser(void);
 int checkGameMoney(void);
 int getComMoney(void);
 int getUserMoney(void);
+void setUserMoney(int);
+int setDeal(int);
 
 #endif
 /* EOF */

@@ -6,13 +6,14 @@
 
 static int com  = 1000;
 static int user = 1000;
+static int deal;
 
 void discCom(void){
   com-=200;
 }
 
 void discUser(void){
-  user-=200;
+  user-=deal;
 }
 
 int checkGameMoney(void){
@@ -26,4 +27,14 @@ int getComMoney(void){
 
 int getUserMoney(void){
   return user;
+}
+
+void setUserMoney(int money){
+  user = money;
+}
+
+int setDeal(int d){
+  if (d > user) return 1;
+  deal = d;
+  return 0;
 }
