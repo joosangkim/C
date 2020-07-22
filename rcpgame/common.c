@@ -13,7 +13,7 @@ int genRandForRCP(void){
 
 void showRSP(int val){
   switch (val){
-    case ROCK: 
+    case ROCK:
       fputs("ROCK", stdout);
       break;
     case SCISSORS:
@@ -23,7 +23,6 @@ void showRSP(int val){
       fputs("PAPER", stdout);
       break;
   };
-};
+}
 
 /* EOF */
-

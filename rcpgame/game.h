@@ -7,13 +7,14 @@
 enum {
   ROCK=1,
   SCISSORS,
-  PAPER
+  PAPER,
+  EXIT
 } RCP;
 
 int ChoiceOfCom(void);
 int ChoiceOfMe(void);
 void WhoIsWinner(int com, int you);
 
-#endif 
+#endif
 
 /* EOF */

@@ -3,6 +3,8 @@
  */
 #include "common.h"
 #include "game.h"
+#include "gameTimes.h"
+#include "gameMoney.h"
 
 int ChoiceOfCom(void){
   /* initialize random seed: */
@@ -11,8 +13,8 @@ int ChoiceOfCom(void){
 }
 
 int ChoiceOfMe(void){
-  int s; 
-  puts("Enter 1 for ROCK, enter 2 for SCISSORS, enter 3 for PAPER: ");
+  int s;
+  puts("ROCK<1>  SCISSORS<2>  PAPER<3>  EXIT<4>: ");
   scanf("%d", &s);
   return s;
 }
@@ -31,10 +33,13 @@ void WhoIsWinner(int com, int you){
   }else if ( com == PAPER){
     if ( you == SCISSORS ) isWinner = 1;
   }
-  
+
   if(!isWinner){
+    discUser();
     puts("Com is Winner");
   }else {
+    countWinUser();
+    discCom();
     puts("You are Winner");
   }
 }
