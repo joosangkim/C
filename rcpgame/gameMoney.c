@@ -4,37 +4,43 @@
 #include "common.h"
 #include "gameMoney.h"
 
-static int com  = 1000;
-static int user = 1000;
-static int deal;
+struct Money money;
+
+struct Money *initMoney(void){
+  money.com = 1000;
+  money.user = 1000;
+  money.deal = 0;
+
+  return &money;
+}
 
 void discCom(void){
-  com-=200;
+  money.com-=200;
 }
 
 void discUser(void){
-  user-=deal;
+  money.user-=money.deal;
 }
 
 int checkGameMoney(void){
-  if (com <= 0 || user <= 0) return 0;
+  if (money.com <= 0 || money.user <= 0) return 0;
   else                       return 1;
 }
 
 int getComMoney(void){
-  return com;
+  return money.com;
 }
 
 int getUserMoney(void){
-  return user;
+  return money.user;
 }
 
-void setUserMoney(int money){
-  user = money;
+void setUserMoney(int um){
+  money.user = um;
 }
 
 int setDeal(int d){
-  if (d > user) return 1;
-  deal = d;
+  if (d > money.user) return 1;
+  money.deal = d;
   return 0;
 }

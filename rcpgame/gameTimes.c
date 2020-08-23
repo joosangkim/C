@@ -4,21 +4,26 @@
 #include "common.h"
 #include "gameTimes.h"
 
-static int total   = 0;
-static int winUser = 0;
-// int winCom  = 0;
 extern double winRate ;
+struct Times times;
+
+struct Times *initTimes(void){
+  times.total = 0;
+  times.win = 0;
+
+  return &times;
+}
 
 void countGames(void){
-  total++;
+  times.total++;
 }
 // void countWinCom(){
 //   winCom++;
 // }
 void countWinUser(void){
-  winUser++;
+  times.win++;
 }
 double calcWinRate(void){
-  return (winRate = winUser / (double)total * 100);
+  return (winRate = times.win / (double)times.total * 100);
 }
 

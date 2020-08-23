@@ -4,7 +4,12 @@
  */
 #ifndef __GAMEMONEY_H__
 #define __GAMEMONEY_H__
+struct Times {
+  int total;
+  int win;
+};
 
+struct Times *initTimes(void);
 void discCom(void);
 void discUser(void);
 int checkGameMoney(void);
