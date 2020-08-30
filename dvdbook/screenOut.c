@@ -19,8 +19,10 @@ void ShowMenu(void){
   printf(" 5. Rent   DVD \n");
   printf(" 6. Return DVD   \n");
   printf("----------------------------\n");
-  printf(" 7. Rent History \n");
-  printf(" 8. Exit \n");
+  printf(" 7. Rent History By ISBN\n");
+  printf(" 8. Rent History By Member ID\n");
+  printf("----------------------------\n");
+  printf(" 9. Exit \n");
   printf("============================\n");
   printf("CHOOSE >> ");
 
@@ -76,7 +78,14 @@ void showDVDInfo(dvdInfo* pDvd){
   printf("----------------------------\n");
 }
 
-void ShowRentHistory(int rentDate, cusInfo* ci){
+void ShowRentHistoryWithCusInfo(int rentDate, cusInfo* ci){
   printf("Rent Date: %d\n", rentDate);
   showCustomerInfo(ci);
+}
+
+void ShowRentHistoryWithISBN(int rendDate, char* ISBN){
+  printf("----------------------------\n");
+  printf("|  >> ISBN      : %s \n", ISBN);
+  printf("|  >> RENT DATE : %d \n", rendDate);
+  printf("----------------------------\n");
 }

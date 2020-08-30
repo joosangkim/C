@@ -3,9 +3,10 @@
  * Content: customer information
  */
 #include "common.h"
-#include "dvdInfo.h"
+#include "dvdInfoAccess.h"
 
 #define MAX_DVD 100
+#define DVD_BACKUP_FILE "dvdInfo.dat"
 
 static dvdInfo* dvdList[MAX_DVD];
 static int numOfDvd=0;
@@ -19,6 +20,7 @@ int AddDvdInfo(char* isbn, char* title, int* genre){
     di->rentState = RETURNED;
 
     dvdList[numOfDvd++] = di;
+    StoreDVDListToFile();
     return 0;
   }
   return 1;
@@ -44,17 +46,48 @@ int IsRegistISBN(char* isbn){
   return 0;
 }
 
-void SetDVDState(dvdInfo* dvd, int state){
+int SetDVDState(char* isbn, int state){
+  dvdInfo* dvd;
+  dvd = GetDVDPtrByISBN(isbn);
+
+  if (NULL == dvd)  return 1;
   dvd->rentState = state;
-}
-int AddRentInfo(dvdInfo* dvd, char* id, int date){
-  if (dvd->numOfRentCus > RENT_LEN){
-    return 1;
-  }
-  strcpy(dvd->rentList[dvd->numOfRentCus].cusID, id);
-  dvd->rentList[dvd->numOfRentCus++].rentDay = date;
-  SetDVDState(dvd, RENTED);
+  StoreDVDListToFile();
   return 0;
+}
+
+int GetDVDState(char* isbn){
+  dvdInfo* dvd;
+  dvd = GetDVDPtrByISBN(isbn);
+
+  if (NULL == dvd)  return -1;
+  return dvd->rentState;
+}
+
+void StoreDVDListToFile(void){
+  int i;
+  FILE* fp = fopen(DVD_BACKUP_FILE, "wb");
+  if(NULL == fp) return;
+
+  fwrite(&numOfDvd, sizeof(int), 1, fp);
+  for(i = 0; i<numOfDvd; i++){
+    fwrite(dvdList[i], sizeof(dvdInfo), 1, fp);
+  }
+  fclose(fp);
+
+}
+void LoadDVDListToFile(void){
+  int i;
+  FILE* fp = fopen(DVD_BACKUP_FILE, "rb");
+  if(NULL == fp) return;
+
+  fread(&numOfDvd, sizeof(int), 1, fp);
+  for(i = 0; i<numOfDvd; i++){
+    dvdList[i] = (dvdInfo*)malloc(sizeof(dvdInfo));
+    fread(dvdList[i],sizeof(dvdInfo),1 ,fp);
+  }
+  fclose(fp);
+
 }
 
 

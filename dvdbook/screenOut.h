@@ -12,5 +12,6 @@ void ShowMenu(void);
 void showCustomerInfo(cusInfo* pCus);
 void showDVDInfo(dvdInfo* pDvd);
 void showGenre(int gen);
-void ShowRentHistory(int rentDate, cusInfo* ci);
+void ShowRentHistoryWithCusInfo(int rentDate, cusInfo* ci);
+void ShowRentHistoryWithISBN(int rendDate, char* ISBN);
 #endif

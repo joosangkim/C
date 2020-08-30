@@ -10,6 +10,8 @@
 int AddDvdInfo(char* isbn, char* title, int* genre);
 dvdInfo* GetDVDPtrByISBN(char* isbn);
 int IsRegistISBN(char* isbn);
-void SetDVDState(dvdInfo* dvd, int state);
-int AddRentInfo(dvdInfo* dvd, char* id, int date);
+int SetDVDState(char* isbn, int state);
+int GetDVDState(char* isbn);
+void StoreDVDListToFile(void);
+void LoadDVDListToFile(void);
 #endif

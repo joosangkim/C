@@ -6,6 +6,12 @@
 #include "common.h"
 #include "manager.h"
 
+void InitData(void){
+  LoadCusListToFile();
+  LoadDVDListToFile();
+  LoadRentListToFile();
+}
+
 void RegisterCustomer(void){
   char id[ID_LEN];
   char name[NAME_LEN];
@@ -96,7 +102,7 @@ void RentDVD(void){
   char isbn[ISBN_LEN];
   char id[ID_LEN];
   int  rentDate;
-  dvdInfo* di;
+  int  rentState;
 
   fputs("Enter ISBN to rent: ", stdout);
   scanf("%s", isbn);
@@ -105,12 +111,9 @@ void RentDVD(void){
     printf("No DVD with ISBN \'%s\'...\n", isbn);
     return;
   }
-  di = GetDVDPtrByISBN(isbn);
-  if (di == NULL){
-    printf("No DVD with ISBN \'%s\'...\n", isbn);
-    return;
-  }
-  if(di->rentState == RENTED ){
+
+  rentState = GetDVDState(isbn);
+  if(rentState == RENTED ){
     puts("The DVD is Rented...");
     return;
   }
@@ -128,7 +131,7 @@ void RentDVD(void){
   scanf("%d", &rentDate);
   fflush(stdin);
 
-  if(!AddRentInfo(di, id, rentDate)){
+  if(!AddRentList(isbn, id, rentDate)){
     puts("Rent Complete");
   }else {
     puts("Rent Failed");
@@ -138,7 +141,7 @@ void RentDVD(void){
 
 void ReturnDVD(void){
   char isbn[ISBN_LEN];
-  dvdInfo* di;
+  int rentState;
 
   fputs("Enter ISBN to return: ", stdout);
   scanf("%s", isbn);
@@ -147,42 +150,53 @@ void ReturnDVD(void){
     printf("No DVD with ISBN \'%s\'...\n", isbn);
     return;
   }
-  di = GetDVDPtrByISBN(isbn);
-  if (di == NULL){
-    printf("No DVD with ISBN \'%s\'...\n", isbn);
-    return;
-  }
-  if(di->rentState == RETURNED ){
+
+  rentState=GetDVDState(isbn);
+  if(rentState == RETURNED ){
     puts("The DVD is already returned...");
     return;
   }
   puts("Start return procedure...");
-  SetDVDState(di, RETURNED);
-  puts("Return Complete");
+  if (SetDVDState(isbn, RETURNED)){
+    puts("Return Failed...");
+  };
+  puts("Return Complete...");
   return;
 }
 
-void RentHistory(void){
+void RentHistoryByISBN(void){
   char isbn[ISBN_LEN];
-  int i;
-  dvdInfo* di;
 
-  fputs("Enter ISBN to return: ", stdout);
+  fputs("Enter ISBN for searching: ", stdout);
   scanf("%s", isbn);
   fflush(stdin);
   if(!IsRegistISBN(isbn)){
     printf("No DVD with ISBN \'%s\'...\n", isbn);
     return;
   }
-  di = GetDVDPtrByISBN(isbn);
-  if (di == NULL){
-    printf("No DVD with ISBN \'%s\'...\n", isbn);
+  PrintOutRentAllCustInfo(isbn);
+
+  return;
+
+}
+
+void RentHistoryByCusAndDate(void){
+  char id[ID_LEN];
+  int start, end;
+
+  fputs("Enter memberID for searching: ", stdout);
+  scanf("%s", id);
+  fflush(stdin);
+  if(!IsRegistID(id)){
+    printf("No member with ID \'%s\'...\n", id);
     return;
   }
 
-  for(i = 0; i < di->numOfRentCus; i++){
-    ShowRentHistory(di->rentList[i].rentDay, GetCusPtrByID(di->rentList[i].cusID));
-  }
+  fputs("Enter date range(YYYYMMDD YYYYMMDD): ", stdout);
+  scanf("%d %d", &start, &end);
+  fflush(stdin);
+  PrintOutCusAllRentInfo(id, start, end);
+
   return;
 
 }

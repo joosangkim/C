@@ -9,13 +9,14 @@ enum{
   DVD_SEARCH,
   RENT_DVD,
   RETURN_DVD,
-  RENT_HIST,
+  RENT_HIST_BY_ISBN,
+  RENT_HIST_BY_CUS_ID,
   QUIT
 };
 
 int main(void){
   int inputMenu = 0;
-
+  InitData();
   while(1){
     ShowMenu();
     scanf("%d", &inputMenu);
@@ -47,11 +48,14 @@ int main(void){
         ReturnDVD();
         getchar();
         break;
-      case RENT_HIST:
-        RentHistory();
+      case RENT_HIST_BY_ISBN:
+        RentHistoryByISBN();
         getchar();
         break;
-
+      case RENT_HIST_BY_CUS_ID:
+        RentHistoryByCusAndDate();
+        getchar();
+        break;
     }
 
     if (inputMenu == QUIT){

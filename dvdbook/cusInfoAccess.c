@@ -3,9 +3,10 @@
  * Content: customer information
  */
 #include "common.h"
-#include "cusInfo.h"
+#include "cusInfoAccess.h"
 
 #define MAX_CUSTOMER 100
+#define CUS_BACKUP_FILE "cusInfo.dat"
 
 static cusInfo* cusList[MAX_CUSTOMER];
 static int numOfCustomer=0;
@@ -17,6 +18,7 @@ int AddCusInfo(char* ID, char* name, char* num){
     strcpy(ci->name,name);
     strcpy(ci->phoneNum,num);
     cusList[numOfCustomer++] = ci;
+    StoreCusListToFile();
     return 0;
   }
   return 1;
@@ -40,4 +42,29 @@ int IsRegistID(char* ID){
     }
   }
   return 0;
+}
+
+void StoreCusListToFile(void){
+  int i;
+  FILE* fp = fopen(CUS_BACKUP_FILE, "wb");
+  if(NULL == fp) return;
+
+  fwrite(&numOfCustomer, sizeof(int), 1, fp);
+  for(i = 0; i<numOfCustomer; i++){
+    fwrite(cusList[i], sizeof(cusInfo), 1, fp);
+  }
+  fclose(fp);
+
+}
+void LoadCusListToFile(void){
+  int i;
+  FILE* fp = fopen(CUS_BACKUP_FILE, "rb");
+  if(NULL == fp) return;
+
+  fread(&numOfCustomer, sizeof(int), 1, fp);
+  for(i = 0; i<numOfCustomer; i++){
+    cusList[i] = (cusInfo*)malloc(sizeof(cusInfo));
+    fread(cusList[i],sizeof(cusInfo),1 ,fp);
+  }
+  fclose(fp);
 }

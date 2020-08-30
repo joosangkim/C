@@ -23,20 +23,12 @@ enum {
   RETURNED
 };
 
-typedef struct __devRentInfo{
-  char cusID[ID_LEN];
-  unsigned int rentDay;
-} dvdRentInfo;
-
 typedef struct __dvdInfo
 {
   char ISBN[ISBN_LEN];
   char title[TITLE_LEN];
   int  genre;
-
   int rentState;
-  int numOfRentCus;
-  dvdRentInfo rentList[RENT_LEN];
 } dvdInfo;
 
 #endif
